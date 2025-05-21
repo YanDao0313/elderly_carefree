@@ -3,10 +3,16 @@ import OpenAI from "openai";
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
+// 检查环境变量
+if (!process.env.OPENAI_API_KEY) {
+    console.error("Error: OPENAI_API_KEY environment variable is not set");
+    throw new Error("OPENAI_API_KEY is required");
+}
+
 // 初始化OpenAI客户端，使用OpenRouter
 const openai = new OpenAI({
-    baseURL: "https://openrouter.ai/api/v1",
-    apiKey: "replace_this",
+    baseURL: process.env.OPENAI_BASE_URL || "https://openrouter.ai/api/v1",
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 // 修改函数签名，接受任何带有 json 方法的对象

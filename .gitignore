@@ -12,5 +12,11 @@ next-env.d.ts
 app
 dist
 
+# environment variables
+.env
+.env.local
+.env.development
+.env.production
+
 /.vscode
 .DS_Store
