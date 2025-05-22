@@ -9,4 +9,19 @@ files:
       filter:
           - package.json
           - app
+          - "!.env.development"
+          - "!.env.development.example"
+          - "!.env.production.example"
+    - from: .
+      filter:
+          - ".env.production"
+      when: "production"
+
+extraResources:
+    - from: .env.production
+      to: .env.production
+      filter:
+          - ".env.production"
+      when: "production"
+
 publish: null

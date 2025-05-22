@@ -7,6 +7,16 @@ import express from "express";
 import { TTSRoutes } from "./routes/tts.routes";
 import { POST as handleChatRequest } from "./routes/chat.routes";
 import { POST as handleDetectRequest } from "./routes/detect.routes";
+import { envService } from "./services/env.service";
+
+// 初始化环境变量
+try {
+    envService.requireEnvVar("OPENAI_API_KEY");
+    console.log("Environment initialized successfully");
+} catch (error) {
+    console.error("Failed to initialize environment variables:", error);
+    process.exit(1);
+}
 
 const isProd = process.env.NODE_ENV === "production";
 

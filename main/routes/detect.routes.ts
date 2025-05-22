@@ -1,18 +1,14 @@
 import OpenAI from "openai";
+import { envService } from "../services/env.service";
 
 // Allow responses up to 30 seconds
 export const maxDuration = 30;
 
-// 检查环境变量
-if (!process.env.OPENAI_API_KEY) {
-    console.error("Error: OPENAI_API_KEY environment variable is not set");
-    throw new Error("OPENAI_API_KEY is required");
-}
-
 // 初始化OpenAI客户端，使用OpenRouter
 const openai = new OpenAI({
-    baseURL: process.env.OPENAI_BASE_URL || "https://openrouter.ai/api/v1",
-    apiKey: process.env.OPENAI_API_KEY,
+    baseURL:
+        envService.get("OPENAI_BASE_URL") || "https://openrouter.ai/api/v1",
+    apiKey: envService.requireEnvVar("OPENAI_API_KEY"),
 });
 
 // 处理诈骗检测请求
