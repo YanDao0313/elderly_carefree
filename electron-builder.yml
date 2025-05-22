@@ -1,4 +1,4 @@
-appId: com.elderly.shield
+appId: com.krisyan.elderly
 productName: 银发无忧
 copyright: Copyright © 2025 Kris Yan
 directories:
@@ -25,3 +25,20 @@ extraResources:
       when: "production"
 
 publish: null
+
+mac:
+    category: public.app-category.utilities
+    target:
+        - dmg
+        - zip
+
+win:
+    target:
+        - nsis
+        - portable
+
+linux:
+    target:
+        - AppImage
+        - deb
+    category: Utility

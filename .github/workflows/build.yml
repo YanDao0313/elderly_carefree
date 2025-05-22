@@ -1,0 +1,72 @@
+name: Build & Release
+
+on:
+    push:
+        branches:
+            - main
+            - master
+        tags:
+            - "v*"
+
+jobs:
+    release:
+        runs-on: ${{ matrix.os }}
+
+        env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            API_KEY: ${{ secrets.OPENAI_API_KEY }}
+            NODE_ENV: production
+
+        strategy:
+            matrix:
+                os: [windows-latest, macos-latest, ubuntu-latest]
+
+        steps:
+            - name: Check out Git repository
+              uses: actions/checkout@v4
+
+            - name: Set up environment
+              shell: bash
+              run: |
+                  cp .env.production.example .env.production
+                  echo "OPENAI_API_KEY=$API_KEY" >> .env.production
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 18
+                  cache: "npm"
+
+            - name: Install Dependencies
+              run: |
+                  npm install
+
+            - name: Build Electron App
+              run: |
+                  npm run build
+                  npm run dist
+
+            - name: Upload Artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ${{ matrix.os }}-artifacts
+                  path: |
+                      dist/*.exe
+                      dist/*.dmg
+                      dist/*.deb
+                      dist/*.AppImage
+                      dist/*.zip
+                  if-no-files-found: ignore
+
+            - name: Create Release
+              if: startsWith(github.ref, 'refs/tags/')
+              uses: softprops/action-gh-release@v1
+              with:
+                  files: |
+                      dist/*.exe
+                      dist/*.dmg
+                      dist/*.deb
+                      dist/*.AppImage
+                      dist/*.zip
+                  draft: true
+                  prerelease: false
