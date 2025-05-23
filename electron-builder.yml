@@ -2,43 +2,37 @@ appId: com.krisyan.elderly
 productName: 银发无忧
 copyright: Copyright © 2025 Kris Yan
 directories:
-    output: dist
-    buildResources: resources
+  output: dist
+  buildResources: resources
 files:
-    - from: .
-      filter:
-          - package.json
-          - app
-          - "!.env.development"
-          - "!.env.development.example"
-          - "!.env.production.example"
-    - from: .
-      filter:
-          - ".env.production"
-      when: "production"
+  - from: .
+    filter:
+      - package.json
+      - app
+      - "!.env.development"
+      - "!.env.development.example"
+      - "!.env.production.example"
+      - ".env.production"
 
 extraResources:
-    - from: .env.production
-      to: .env.production
-      filter:
-          - ".env.production"
-      when: "production"
+  - from: .env.production
+    to: .env.production
 
 publish: null
 
 mac:
-    category: public.app-category.utilities
-    target:
-        - dmg
-        - zip
+  category: public.app-category.utilities
+  target:
+    - dmg
+    - zip
 
 win:
-    target:
-        - nsis
-        - portable
+  target:
+    - nsis
+    - portable
 
 linux:
-    target:
-        - AppImage
-        - deb
-    category: Utility
+  target:
+    - AppImage
+    - deb
+  category: Utility
