@@ -3,7 +3,10 @@
     "name": "elderly-carefree",
     "description": "银发无忧 - 智能长者关怀助手",
     "version": "1.0.0",
-    "author": "Kris Yan",
+    "author": {
+        "name": "Kris Yan",
+        "email": "hi@krisyan.dev"
+    },
     "main": "app/background.js",
     "scripts": {
         "dev": "nextron",
