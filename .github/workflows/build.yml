@@ -15,7 +15,7 @@ jobs:
         env:
             GH_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
             API_KEY: ${{ secrets.OPENAI_API_KEY }}
-            NODE_ENV: production
+            # NODE_ENV: production
 
         strategy:
             matrix:
