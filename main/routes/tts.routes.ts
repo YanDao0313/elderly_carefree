@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { TTSService } from "../services/tts.service";
 import fs from "fs";
 import path from "path";
+import rateLimit from "express-rate-limit";
 
 export class TTSRoutes {
     private router: Router;
@@ -21,11 +22,21 @@ export class TTSRoutes {
     }
 
     private initializeRoutes(): void {
+        // 设置速率限制器: 每 15 分钟最多 100 个请求
+        const generateAudioLimiter = rateLimit({
+            windowMs: 15 * 60 * 1000, // 15 分钟
+            max: 100, // 每窗口最多 100 个请求
+            message: {
+                success: false,
+                error: "请求过于频繁，请稍后再试。",
+            },
+        });
+
         // 获取可用的语音包列表
         this.router.get("/", this.getVoices.bind(this));
 
         // 生成语音文件
-        this.router.post("/", this.generateAudio.bind(this));
+        this.router.post("/", generateAudioLimiter, this.generateAudio.bind(this));
 
         console.log("TTS 路由初始化完成");
     }
